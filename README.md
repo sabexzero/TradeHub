@@ -24,7 +24,7 @@ Tech stack:
 - [ ] Each sale of cryptocurrency charges a certain percentage of the commission from the user.
 - [ ] On the cryptocurrency page, it should be possible to find out the history of the fall, increase in the price of this cryptocurrency.
 - [ ] Each user has access to their transaction history.
-- [ ] For security purposes, authentication via YubiKey, i.e. a USB key, must be implemented.
+- [ ] For security purposes, authentication via [Fortify](https://github.com/fortify), i.e. a USB key, must be implemented.
 
 ## Non-functional requirements:
 - Safety
