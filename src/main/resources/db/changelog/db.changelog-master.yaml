@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - preConditions:
+      - dbms:
+          type: postgresql
+      - runningAs:
+          username:  postgres
+  - changeSet:
+      id: 0
+      author: sabextech
+      changes:
+        - tagDatabase:
+            tag: db_init
+
+  - include:
+      file: v-1.0/db.changelog-v.1.0.yaml
+      relativeToChangelogFile: true
+
+  - changeSet:
+      id: 1
+      author: sabextech
+      changes:
+        - tagDatabase:
+            tag: v.1.0

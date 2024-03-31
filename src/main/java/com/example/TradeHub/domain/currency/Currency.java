@@ -5,10 +5,8 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
-@Schema(
-        description = "The essence of the currency, " +
-                "domain-specific fields were described separately"
-)
+@Schema(description = "The essence of the currency," +
+                        "domain-specific fields were described separately")
 @Table("currencies")
 public class Currency {
     @Id

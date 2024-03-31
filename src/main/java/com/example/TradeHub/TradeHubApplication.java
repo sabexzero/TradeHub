@@ -7,21 +7,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TradeHubApplication {
 	//TODO_SECTION
 	
-	//TODO: Implement user repository
-	//	labels: enhancement
-	
-	//TODO: Implement cryptocurrency repository
-	//	labels: enhancement
-	
-	//TODO: Implement currency repository
-	//	labels: enhancement
-	
-	//TODO: Implement luquibase
-	// labels: enhancement
-	
-	//TODO: Write tests for repositories
-	// labels: tests
-	
 	//TODO: Write SwaggerInfo and JavaDoc for domain and repository
 	// labels: documentation
 	

@@ -1,0 +1,22 @@
+databaseChangeLog:
+    - changeSet:
+        id: 3
+        author: sabextech
+        changes:
+            - sqlFile:
+                encoding: utf8
+                endDelimiter: \nGO
+                relativeToChangelogFile: true
+                splitStatements: true
+                stripComments: true
+                path: sql/01-create-wallets-table.sql
+                dbms: postgresql
+        rollback:
+            - sqlFile:
+                  encoding: utf8
+                  endDelimiter: \nGO
+                  relativeToChangelogFile: true
+                  splitStatements: true
+                  stripComments: true
+                  path: sql/rollback/01-delete-wallets-table.sql
+                  dbms: postgresql

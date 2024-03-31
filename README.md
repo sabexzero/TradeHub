@@ -12,6 +12,7 @@ Tech stack:
   - PostgreSQL
   - LogBack & slf4j
   - RabbitMQ (maybe)
+  - Liquibase
 - DB:
   - PostgreSQL
   - Cache: Redis

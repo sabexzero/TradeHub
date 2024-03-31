@@ -13,8 +13,6 @@ public class User {
     private Long id;
     private String username;
     
-    @MappedCollection(
-            idColumn = "user_id"
-    )
+    @MappedCollection(idColumn = "user_id")
     private List<Wallet> wallet;
 }

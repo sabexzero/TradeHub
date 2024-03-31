@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - include: 
+      file: changeset/01-changeset-user.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changeset/01-changeset-wallet.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changeset/01-changeset-cryptocurrency.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: changeset/01-changeset-currency.yaml
+      relativeToChangelogFile: true
