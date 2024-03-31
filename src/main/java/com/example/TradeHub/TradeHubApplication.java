@@ -7,8 +7,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TradeHubApplication {
 	//TODO_SECTION
 	
-	//TODO: Write SwaggerInfo and JavaDoc for domain and repository
-	// labels: documentation
+	//TODO: Write tests for implemented services
+	
+	//TODO: Implement API using
+	
+	//TODO: Security Design
 	
 	// END TODO_SECTION
 	public static void main(String[] args) {

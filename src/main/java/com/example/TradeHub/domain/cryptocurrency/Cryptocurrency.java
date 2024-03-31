@@ -16,8 +16,6 @@ public class Cryptocurrency {
     @Column(value = "base_asset")
     public String baseAsset;
     
-    @Column(
-            value = "base_asset"
-    )
+    @Column(value = "wallet_id")
     public Long walletId;
 }

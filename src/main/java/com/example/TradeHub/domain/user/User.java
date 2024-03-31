@@ -1,5 +1,6 @@
 package com.example.TradeHub.domain.user;
 
+import com.example.TradeHub.domain.wallet.CryptoWallet;
 import com.example.TradeHub.domain.wallet.Wallet;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.MappedCollection;
@@ -14,5 +15,8 @@ public class User {
     private String username;
     
     @MappedCollection(idColumn = "user_id")
-    private List<Wallet> wallet;
+    private List<CryptoWallet> cryptoWallet;
+    
+    @MappedCollection(idColumn = "user_id")
+    private List<Wallet> wallets;
 }
