@@ -2,10 +2,12 @@ package com.example.TradeHub.service;
 
 import com.example.TradeHub.domain.cryptocurrency.Cryptocurrency;
 import com.example.TradeHub.domain.currency.Currency;
+import com.example.TradeHub.domain.specified.CryptoTransaction;
 import com.example.TradeHub.domain.user.User;
-import com.example.TradeHub.domain.wallet.Wallet;
+import com.example.TradeHub.domain.wallet.CryptoWallet;
+import com.example.TradeHub.repository.specified.CryptoTransactionRepository;
 import com.example.TradeHub.repository.user.UserRepository;
-import com.example.TradeHub.repository.wallet.WalletRepository;
+import com.example.TradeHub.repository.wallet.CryptoWalletRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,30 +17,43 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class PaymentService {
-    public final UserRepository userRepository;
-    public final WalletRepository walletRepository;
+    private final UserRepository userRepository;
+    private final CryptoWalletRepository cryptoWalletRepository;
+    private final CryptoTransactionRepository cryptoTransactionRepository;
     
-    public Wallet depositBalance(Long userId, Currency currency, BigDecimal amount){
-        User userToDeposit = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
-        Optional<Wallet> optionalWallet = walletRepository.findByUserAndCurrency(userToDeposit, currency);
+    
+    public CryptoWallet buyCryptoCurrency(Long userId, Cryptocurrency cryptocurrencyToBuy, BigDecimal amount, Currency payment, BigDecimal unitPrice){
+        User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("User not found"));
+        Optional<CryptoWallet> optionalWallet = cryptoWalletRepository.findByUserAndCryptocurrency(user, cryptocurrencyToBuy);
+        
+        //Debiting the Currency account in the amount of amount * UnitPrice occurs at the controller level
+        
+        CryptoWallet resultWallet;
         
         if (optionalWallet.isPresent()) {
-            Wallet userWallet = optionalWallet.get();
+            CryptoWallet userWallet = optionalWallet.get();
             userWallet.IncreaseBalance(amount);
             
-            return walletRepository.save(userWallet);
+            resultWallet = cryptoWalletRepository.save(userWallet);
         } else {
-            Wallet newUserWallet = Wallet.builder()
+            CryptoWallet newUserWallet = CryptoWallet.builder()
                     .balance(amount)
-                    .user(userToDeposit)
-                    .currency(currency)
+                    .user(user)
+                    .cryptocurrency(cryptocurrencyToBuy)
                     .build();
             
-            return walletRepository.save(newUserWallet);
+            resultWallet = cryptoWalletRepository.save(newUserWallet);
         }
-    }
-    public User buyCryptoCurrency(Long userId, Cryptocurrency cryptocurrency, BigDecimal amount){
-        //TODO: Implemented method to buy cryptocurrency
-        return new User();
+        
+        cryptoTransactionRepository.save(
+                CryptoTransaction.builder()
+                        .baseAsset(payment.baseAsset)
+                        .quoteAsset(cryptocurrencyToBuy.baseAsset)
+                        .baseAmount(amount.multiply(unitPrice))
+                        .quoteAmount(amount)
+                        .build()
+        );
+        
+        return resultWallet;
     }
 }
