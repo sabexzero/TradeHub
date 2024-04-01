@@ -1,7 +1,6 @@
 package com.example.TradeHub.domain.user;
 
 import com.example.TradeHub.domain.wallet.CryptoWallet;
-import com.example.TradeHub.domain.wallet.Wallet;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.MappedCollection;
 import org.springframework.data.relational.core.mapping.Table;
