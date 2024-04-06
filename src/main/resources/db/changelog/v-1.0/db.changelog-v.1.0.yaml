@@ -6,8 +6,5 @@ databaseChangeLog:
       file: changeset/01-changeset-wallet.yaml
       relativeToChangelogFile: true
   - include:
-      file: changeset/01-changeset-cryptocurrency.yaml
-      relativeToChangelogFile: true
-  - include:
-      file: changeset/01-changeset-currency.yaml
+      file: changeset/01-changeset-buy-requests.yaml
       relativeToChangelogFile: true

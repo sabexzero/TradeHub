@@ -15,7 +15,4 @@ public class User {
     
     @MappedCollection(idColumn = "user_id")
     private List<CryptoWallet> cryptoWallet;
-    
-    @MappedCollection(idColumn = "user_id")
-    private List<Wallet> wallets;
 }

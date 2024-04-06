@@ -1,0 +1,22 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: sabextech
+      changes:
+        - sqlFile:
+            encoding: utf8
+            endDelimiter: \nGO
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+            path: sql/01-create-buy-requests-table.sql
+            dbms: postgresql
+      rollback:
+        - sqlFile:
+            encoding: utf8
+            endDelimiter: \nGO
+            relativeToChangelogFile: true
+            splitStatements: true
+            stripComments: true
+            path: sql/rollback/01-delete-buy-requests-table.sql
+            dbms: postgresql

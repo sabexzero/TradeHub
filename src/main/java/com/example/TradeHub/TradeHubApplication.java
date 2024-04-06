@@ -13,6 +13,8 @@ public class TradeHubApplication {
 	
 	//TODO: Security Design
 	
+	//TODO: Implement controllers
+	
 	// END TODO_SECTION
 	public static void main(String[] args) {
 		SpringApplication.run(TradeHubApplication.class, args);

@@ -1,5 +1,6 @@
 package com.example.TradeHub.domain.specified;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -17,9 +18,11 @@ public class CryptoTransaction {
     @Id
     private Long id;
     
+    @Schema(description = "Contains the code that will be needed to get information using NinjasApi")
     @Column("base_asset")
     private String baseAsset;
     
+    @Schema(description = "Contains the code that will be needed to get information using NinjasApi")
     @Column("quote_asset")
     private String quoteAsset;
     
