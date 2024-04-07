@@ -9,11 +9,14 @@ public class TradeHubApplication {
 	
 	//TODO: Write tests for implemented services
 	
-	//TODO: Implement API using
+	//TODO: Fix db errors
+	// labels: fixme
+	
+	//TODO: Implement logging
+	
+	//TODO: Create constant error messages
 	
 	//TODO: Security Design
-	
-	//TODO: Implement controllers
 	
 	// END TODO_SECTION
 	public static void main(String[] args) {

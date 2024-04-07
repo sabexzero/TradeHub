@@ -1,7 +1,6 @@
 package com.example.TradeHub.repository.cryptocurrency;
 
-import com.example.TradeHub.web.dtos.buy.CompletedCryptoBuyRequest;
-import com.example.TradeHub.web.dtos.buy.CryptoBuyRequest;
+import com.example.TradeHub.domain.specified.CompletedCryptoBuyRequest;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.Optional;

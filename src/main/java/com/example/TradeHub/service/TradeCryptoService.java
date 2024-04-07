@@ -2,7 +2,7 @@ package com.example.TradeHub.service;
 
 import com.example.TradeHub.domain.wallet.CryptoWallet;
 import com.example.TradeHub.repository.wallet.CryptoWalletRepository;
-import com.example.TradeHub.web.dtos.trade.CompletedCryptoTradeRequest;
+import com.example.TradeHub.web.dtos.trade.CryptoTradeRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,8 +18,8 @@ public class TradeCryptoService {
     //TODO: Simplify or decompose the method
     // labels: refactoring
     @Transactional
-    public void handleTradeRequest(
-            CompletedCryptoTradeRequest request
+    public boolean handleTradeRequest(
+            CryptoTradeRequest request
     ){
         //We receive a wallet from which the cryptocurrency will be debited
         CryptoWallet walletToGive = cryptoWalletRepository.findByUserAndCryptocurrency(
@@ -40,13 +40,16 @@ public class TradeCryptoService {
         
         //We react to the result of the operation
         if(changeBalanceResult >= 0){
-            if(changeBalanceResult == 1)
+            if(changeBalanceResult == 1){
                 cryptoWalletRepository.save(walletToGive);
-            else
+            }
+            else{
                 cryptoWalletRepository.delete(walletToGive);
+            }
         }
-        else
-            throw new RuntimeException("There are not enough funds in the wallet to sell cryptocurrencies");
+        else{
+            return false;
+        }
         
         //Adding cryptocurrencies to the target wallet
         if(walletToGet.isPresent()){
@@ -62,5 +65,7 @@ public class TradeCryptoService {
                     .build();
             cryptoWalletRepository.save(cryptoWallet);
         }
+        
+        return true;
     }
 }

@@ -23,9 +23,11 @@ repositories {
 
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.0'
 	implementation 'org.liquibase:liquibase-core'
 	implementation 'io.swagger.core.v3:swagger-core:2.2.21'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.0'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
