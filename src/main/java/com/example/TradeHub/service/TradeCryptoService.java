@@ -1,8 +1,10 @@
 package com.example.TradeHub.service;
 
+import com.example.TradeHub.domain.annotations.CryptoTransactionHistory.CryptoTransaction;
 import com.example.TradeHub.domain.wallet.CryptoWallet;
 import com.example.TradeHub.repository.wallet.CryptoWalletRepository;
-import com.example.TradeHub.web.dtos.trade.CryptoTradeRequest;
+import com.example.TradeHub.web.dtos.CryptoRequest;
+import com.example.TradeHub.web.dtos.CryptoResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,12 +16,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TradeCryptoService {
     private final CryptoWalletRepository cryptoWalletRepository;
+    private final CoinApiService coinApiService;
     
     //TODO: Simplify or decompose the method
     // labels: refactoring
     @Transactional
-    public boolean handleTradeRequest(
-            CryptoTradeRequest request
+    @CryptoTransaction
+    public CryptoResponse handleTradeRequest(
+            CryptoRequest request
     ){
         //We receive a wallet from which the cryptocurrency will be debited
         CryptoWallet walletToGive = cryptoWalletRepository.findByUserAndCryptocurrency(
@@ -30,13 +34,15 @@ public class TradeCryptoService {
         //We receive a wallet to which the cryptocurrency will be credited
         Optional<CryptoWallet> walletToGet = cryptoWalletRepository.findByUserAndCryptocurrency(
                 request.userId(),
-                request.baseAsset()
+                request.quoteAsset()
         );
         
-        //We are trying to write off the cryptocurrency
-        BigDecimal withdrawn = request.amountToGet().multiply(request.receivedCryptoPrice());
+        BigDecimal receivedCryptoPrice = coinApiService.getCryptocurrencyPrice(request.baseAsset(), request.quoteAsset());
         
-        int changeBalanceResult = walletToGive.DecreaseBalance(withdrawn);
+        //We are trying to write off the cryptocurrency
+        BigDecimal withdrawn = request.amount().multiply(receivedCryptoPrice);
+        
+        int changeBalanceResult = walletToGive.DecreaseBalance(request.amount());
         
         //We react to the result of the operation
         if(changeBalanceResult >= 0){
@@ -48,24 +54,24 @@ public class TradeCryptoService {
             }
         }
         else{
-            return false;
+            return new CryptoResponse(request, receivedCryptoPrice, false);
         }
         
         //Adding cryptocurrencies to the target wallet
         if(walletToGet.isPresent()){
             CryptoWallet checkedWallet = walletToGet.get();
-            checkedWallet.IncreaseBalance(request.amountToGet());
+            checkedWallet.IncreaseBalance(withdrawn);
             
             cryptoWalletRepository.save(checkedWallet);
         } else {
             CryptoWallet cryptoWallet = CryptoWallet.builder()
-                    .balance(request.amountToGet())
-                    .base_asset(request.baseAsset())
+                    .balance(withdrawn)
+                    .base_asset(request.quoteAsset())
                     .userId(request.userId())
                     .build();
             cryptoWalletRepository.save(cryptoWallet);
         }
         
-        return true;
+        return new CryptoResponse(request, withdrawn, true);
     }
 }

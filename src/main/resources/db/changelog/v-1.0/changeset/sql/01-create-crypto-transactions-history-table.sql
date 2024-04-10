@@ -1,9 +1,10 @@
-CREATE TABLE buy_crypto_requests (
+CREATE TABLE crypto_transactions_history (
                          id SERIAL PRIMARY KEY,
                          user_id BIGINT,
-                         amount_to_buy NUMERIC(38, 18),
-                         one_unit_price NUMERIC(38, 18),
+                         base_amount NUMERIC(38, 18),
+                         quote_amount NUMERIC(38, 18),
                          base_asset VARCHAR(20),
                          quote_asset VARCHAR(20),
+                         transaction_type VARCHAR(20),
                          FOREIGN KEY (user_id) REFERENCES users(id)
 );

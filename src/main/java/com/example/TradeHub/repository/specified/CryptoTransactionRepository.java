@@ -1,7 +1,7 @@
 package com.example.TradeHub.repository.specified;
 
-import com.example.TradeHub.domain.specified.CryptoTransaction;
+import com.example.TradeHub.domain.specified.CryptoTransactionHistoryElement;
 import org.springframework.data.repository.CrudRepository;
 
-public interface CryptoTransactionRepository extends CrudRepository<CryptoTransaction, Long> {
+public interface CryptoTransactionRepository extends CrudRepository<CryptoTransactionHistoryElement, Long> {
 }

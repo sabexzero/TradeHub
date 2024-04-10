@@ -9,14 +9,13 @@ public class TradeHubApplication {
 	
 	//TODO: Write tests for implemented services
 	
-	//TODO: Fix db errors
-	// labels: fixme
-	
 	//TODO: Implement logging
 	
 	//TODO: Create constant error messages
 	
 	//TODO: Security Design
+	
+	//TODO: Fix errors in service with incorrect cryptocurrencies values
 	
 	// END TODO_SECTION
 	public static void main(String[] args) {

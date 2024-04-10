@@ -1,6 +1,5 @@
 package com.example.TradeHub.domain.specified;
 
-import com.example.TradeHub.web.dtos.buy.CryptoBuyRequest;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,9 +12,10 @@ import org.springframework.data.relational.core.mapping.Table;
 import java.math.BigDecimal;
 
 /**
+ * @author sabextech
  *  baseAsset - Indicates the currency (monetary) that we want to use as payment
  *  quoteAsset - Indicates the cryptocurrency that we want to receive
- *  amountToBuy - Indicates the amount of cryptocurrency that we want to receive
+ *  amount - Indicates the amount of cryptocurrency that we want to receive
  *  oneUnitPrice - The price of the cryptocurrency in the currency that the user has chosen as payment
  */
 @Table("buy_crypto_requests")
@@ -42,7 +42,7 @@ public class CompletedCryptoBuyRequest {
         
         @Column("amount_to_buy")
         @Schema(description = "Indicates the amount of cryptocurrency that we want to receive")
-        private BigDecimal amountToBuy;
+        private BigDecimal amount;
         
         @Column("one_unit_price")
         @Schema(description = "The price of the cryptocurrency in the currency that the user has chosen as payment")

@@ -1,4 +1,4 @@
-package com.example.TradeHub.repository.user;
+package com.example.TradeHub.repository.specified.user;
 
 import com.example.TradeHub.domain.user.User;
 import org.springframework.data.repository.CrudRepository;

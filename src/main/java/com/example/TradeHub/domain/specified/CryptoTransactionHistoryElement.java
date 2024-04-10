@@ -10,13 +10,16 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import java.math.BigDecimal;
 
-@Table("crypto_transaction")
+@Table("crypto_transactions_history")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CryptoTransaction {
+public class CryptoTransactionHistoryElement {
     @Id
     private Long id;
+    
+    @Column("user_id")
+    private Long userId;
     
     @Schema(description = "Contains the code that will be needed to get information using NinjasApi")
     @Column("base_asset")
@@ -26,7 +29,8 @@ public class CryptoTransaction {
     @Column("quote_asset")
     private String quoteAsset;
     
-    private TransactionType transactionType;
+    @Column("transaction_type")
+    private String transactionType;
     
     @Column("base_amount")
     private BigDecimal baseAmount;

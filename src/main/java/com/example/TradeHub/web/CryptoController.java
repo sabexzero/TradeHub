@@ -2,16 +2,11 @@ package com.example.TradeHub.web;
 
 import com.example.TradeHub.service.CommerceService;
 import com.example.TradeHub.service.TradeCryptoService;
-import com.example.TradeHub.web.dtos.buy.CryptoBuyRequest;
-import com.example.TradeHub.web.dtos.sell.CryptoSellRequest;
-import com.example.TradeHub.web.dtos.trade.CryptoTradeRequest;
+import com.example.TradeHub.web.dtos.CryptoRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,7 +17,7 @@ public class CryptoController {
     
     @PostMapping("/buy")
     public ResponseEntity<?> buyCryptocurrency(
-            @RequestBody CryptoBuyRequest request
+            @RequestBody CryptoRequest request
     ){
         try{
             var handledRequest = commerceService.handleCryptoBuyRequest(request);
@@ -32,9 +27,21 @@ public class CryptoController {
         }
     }
     
+    @PostMapping("/confirm/{requestId}")
+    public ResponseEntity<?> confirmBuyRequest(
+            @PathVariable Long requestId
+    ){
+        try{
+            var handledRequest = commerceService.confirmCryptoBuyRequest(requestId);
+            return new ResponseEntity<>(handledRequest, HttpStatus.OK);
+        } catch (Exception exception){
+            return new ResponseEntity<>(exception.getLocalizedMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+    
     @PostMapping("/sell")
     public ResponseEntity<?> sellCryptocurrency(
-            @RequestBody CryptoSellRequest request
+            @RequestBody CryptoRequest request
             ){
         try{
             var handledRequest = commerceService.handleCryptoSellRequest(request);
@@ -46,7 +53,7 @@ public class CryptoController {
     
     @PostMapping("/trade")
     public ResponseEntity<?> tradeCryptocurrency(
-            @RequestBody CryptoTradeRequest request
+            @RequestBody CryptoRequest request
     ){
         try{
             var handledRequest = tradeCryptoService.handleTradeRequest(request);
