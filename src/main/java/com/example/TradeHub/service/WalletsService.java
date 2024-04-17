@@ -3,6 +3,8 @@ package com.example.TradeHub.service;
 import com.example.TradeHub.domain.wallet.CryptoWallet;
 import com.example.TradeHub.repository.wallet.CryptoWalletRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -12,8 +14,14 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class WalletsService {
     private final CryptoWalletRepository cryptoWalletRepository;
+    private final Logger logger = LoggerFactory.getLogger(WalletsService.class);
+    private static final BigDecimal commissionCoefficient = new BigDecimal("1.03");
     
-    public void increaseUserBalance(Long userId, String asset, BigDecimal amount){
+    public void increaseUserBalance(
+            Long userId,
+            String asset,
+            BigDecimal amount
+    ){
         Optional<CryptoWallet> wallet = cryptoWalletRepository.findByUserAndCryptocurrency(userId, asset);
         
         if(wallet.isEmpty()){

@@ -73,7 +73,10 @@ public class CoinApiService {
         getRequestEntity = new HttpEntity<>(headers);
     }
     
-    public BigDecimal getCryptocurrencyPrice(String baseAsset, String quoteAsset){
+    public BigDecimal getCryptocurrencyPrice(
+            String baseAsset,
+            String quoteAsset
+    ) throws RuntimeException {
         BigDecimal result = null;
         
         ResponseEntity<String> response = restTemplate.exchange(

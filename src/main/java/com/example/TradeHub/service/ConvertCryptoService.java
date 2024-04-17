@@ -66,7 +66,7 @@ public class ConvertCryptoService {
         } else {
             CryptoWallet cryptoWallet = CryptoWallet.builder()
                     .balance(withdrawn)
-                    .base_asset(request.quoteAsset())
+                    .baseAsset(request.quoteAsset())
                     .userId(request.userId())
                     .build();
             cryptoWalletRepository.save(cryptoWallet);

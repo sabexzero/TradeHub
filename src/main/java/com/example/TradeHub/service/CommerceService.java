@@ -52,7 +52,7 @@ public class CommerceService {
     @CryptoTransaction
     public CryptoUserResponse confirmCryptoBuyRequest(
             Long requestId
-    ) throws RuntimeException {
+    ) {
         
         //Allegedly received money from the user
         boolean userHaveMoney = new Random().nextBoolean();
@@ -68,12 +68,13 @@ public class CommerceService {
                 return new CryptoUserResponse(request, false);
             }
         }
+        return new CryptoUserResponse(request, false);
     }
     
     @CryptoTransaction
     public CryptoUserResponse handleCryptoSellRequest(
             CryptoUserRequest request
-    ) throws RuntimeException {
+    ) {
 
         try {
             walletsService.decreaseUserBalance(request.userId(), request.baseAsset(), request.amount());
@@ -81,7 +82,7 @@ public class CommerceService {
             BigDecimal sellPrice = coinApiService.getCryptocurrencyPrice(request.baseAsset(), request.quoteAsset());
             return new CryptoUserResponse(request, sellPrice, true);
         } catch (Exception ex){
-            return new CryptoUserResponse(request, sellPrice, false);
+            return new CryptoUserResponse(request, new BigDecimal(-1), false);
         }
     }
 }
