@@ -1,8 +1,8 @@
 package com.example.TradeHub.web;
 
 import com.example.TradeHub.service.CommerceService;
-import com.example.TradeHub.service.TradeCryptoService;
-import com.example.TradeHub.web.dtos.CryptoRequest;
+import com.example.TradeHub.service.ConvertCryptoService;
+import com.example.TradeHub.web.dtos.CryptoUserRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/crypto")
 public class CryptoController {
     private final CommerceService commerceService;
-    private final TradeCryptoService tradeCryptoService;
+    private final ConvertCryptoService convertCryptoService;
     
     @PostMapping("/buy")
     public ResponseEntity<?> buyCryptocurrency(
-            @RequestBody CryptoRequest request
+            @RequestBody CryptoUserRequest request
     ){
         try{
             var handledRequest = commerceService.handleCryptoBuyRequest(request);
@@ -41,7 +41,7 @@ public class CryptoController {
     
     @PostMapping("/sell")
     public ResponseEntity<?> sellCryptocurrency(
-            @RequestBody CryptoRequest request
+            @RequestBody CryptoUserRequest request
             ){
         try{
             var handledRequest = commerceService.handleCryptoSellRequest(request);
@@ -53,10 +53,10 @@ public class CryptoController {
     
     @PostMapping("/trade")
     public ResponseEntity<?> tradeCryptocurrency(
-            @RequestBody CryptoRequest request
+            @RequestBody CryptoUserRequest request
     ){
         try{
-            var handledRequest = tradeCryptoService.handleTradeRequest(request);
+            var handledRequest = convertCryptoService.handleConvertRequest(request);
             return new ResponseEntity<>(handledRequest, HttpStatus.OK);
         } catch (Exception exception){
             return new ResponseEntity<>(exception.getLocalizedMessage(), HttpStatus.BAD_REQUEST);

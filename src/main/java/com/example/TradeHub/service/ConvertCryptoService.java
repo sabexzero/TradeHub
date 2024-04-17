@@ -3,8 +3,8 @@ package com.example.TradeHub.service;
 import com.example.TradeHub.domain.annotations.CryptoTransactionHistory.CryptoTransaction;
 import com.example.TradeHub.domain.wallet.CryptoWallet;
 import com.example.TradeHub.repository.wallet.CryptoWalletRepository;
-import com.example.TradeHub.web.dtos.CryptoRequest;
-import com.example.TradeHub.web.dtos.CryptoResponse;
+import com.example.TradeHub.web.dtos.CryptoUserRequest;
+import com.example.TradeHub.web.dtos.CryptoUserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,7 +14,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class TradeCryptoService {
+public class ConvertCryptoService {
     private final CryptoWalletRepository cryptoWalletRepository;
     private final CoinApiService coinApiService;
     
@@ -22,8 +22,8 @@ public class TradeCryptoService {
     // labels: refactoring
     @Transactional
     @CryptoTransaction
-    public CryptoResponse handleTradeRequest(
-            CryptoRequest request
+    public CryptoUserResponse handleConvertRequest(
+            CryptoUserRequest request
     ){
         //We receive a wallet from which the cryptocurrency will be debited
         CryptoWallet walletToGive = cryptoWalletRepository.findByUserAndCryptocurrency(
@@ -54,7 +54,7 @@ public class TradeCryptoService {
             }
         }
         else{
-            return new CryptoResponse(request, receivedCryptoPrice, false);
+            return new CryptoUserResponse(request, receivedCryptoPrice, false);
         }
         
         //Adding cryptocurrencies to the target wallet
@@ -72,6 +72,6 @@ public class TradeCryptoService {
             cryptoWalletRepository.save(cryptoWallet);
         }
         
-        return new CryptoResponse(request, withdrawn, true);
+        return new CryptoUserResponse(request, withdrawn, true);
     }
 }

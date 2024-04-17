@@ -5,8 +5,8 @@ import com.example.TradeHub.domain.wallet.CryptoWallet;
 import com.example.TradeHub.repository.cryptocurrency.BuyCryptoRequestRepository;
 import com.example.TradeHub.repository.wallet.CryptoWalletRepository;
 import com.example.TradeHub.domain.specified.CompletedCryptoBuyRequest;
-import com.example.TradeHub.web.dtos.CryptoRequest;
-import com.example.TradeHub.web.dtos.CryptoResponse;
+import com.example.TradeHub.web.dtos.CryptoUserRequest;
+import com.example.TradeHub.web.dtos.CryptoUserResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +22,7 @@ import java.util.Random;
 @Service
 @RequiredArgsConstructor
 public class CommerceService {
-    private final CryptoWalletRepository cryptoWalletRepository;
+    private final WalletsService walletsService;
     private final BuyCryptoRequestRepository buyCryptoRequestRepository;
     
     private final CoinApiService coinApiService;
@@ -34,7 +34,7 @@ public class CommerceService {
      * so this happens only conditionally, as with the sale of cryptocurrency.
      */
     public CompletedCryptoBuyRequest handleCryptoBuyRequest(
-            CryptoRequest request
+            CryptoUserRequest request
     ){
         BigDecimal buyPrice = coinApiService.getCryptocurrencyPrice(request.baseAsset(), request.quoteAsset());
         
@@ -50,7 +50,7 @@ public class CommerceService {
     
     @Transactional
     @CryptoTransaction
-    public CryptoResponse confirmCryptoBuyRequest(
+    public CryptoUserResponse confirmCryptoBuyRequest(
             Long requestId
     ) throws RuntimeException {
         
@@ -60,49 +60,28 @@ public class CommerceService {
                 .orElseThrow(() -> new RuntimeException("Request not found"));
         
         if(userHaveMoney){
-            
-            Optional<CryptoWallet> userWallet = cryptoWalletRepository.findByUserAndCryptocurrency(
-                    request.getUserId(), request.getQuoteAsset());
-            
-            if(userWallet.isPresent()){
-                CryptoWallet existCryptoWallet = userWallet.get();
-                existCryptoWallet.IncreaseBalance(request.getAmount());
-                cryptoWalletRepository.save(existCryptoWallet);
-            } else {
-                CryptoWallet newCryptoWallet = CryptoWallet.builder()
-                        .balance(request.getAmount())
-                        .base_asset(request.getQuoteAsset())
-                        .userId(request.getUserId())
-                        .build();
-                cryptoWalletRepository.save(newCryptoWallet);
+            try{
+                walletsService.increaseUserBalance(request.getUserId(),request.getQuoteAsset(), request.getAmount());
+                buyCryptoRequestRepository.delete(request);
+                return new CryptoUserResponse(request, true);
+            } catch (Exception ex){
+                return new CryptoUserResponse(request, false);
             }
-            buyCryptoRequestRepository.delete(request);
         }
-        return new CryptoResponse(request, userHaveMoney);
     }
     
     @CryptoTransaction
-    public CryptoResponse handleCryptoSellRequest(
-            CryptoRequest request
+    public CryptoUserResponse handleCryptoSellRequest(
+            CryptoUserRequest request
     ) throws RuntimeException {
-        
-        boolean isSuccessful = false;
-        
-        CryptoWallet userWallet = cryptoWalletRepository.findByUserAndCryptocurrency(request.userId(), request.baseAsset())
-                .orElseThrow(() -> new RuntimeException("The person does not have a wallet with this cryptocurrency"));
-        
-        int changeBalanceResult = userWallet.DecreaseBalance(request.amount());
-        
-        if(changeBalanceResult >= 0) {
-            if (changeBalanceResult == 1) {
-                cryptoWalletRepository.save(userWallet);
-            } else {
-                cryptoWalletRepository.delete(userWallet);
-            }
+
+        try {
+            walletsService.decreaseUserBalance(request.userId(), request.baseAsset(), request.amount());
+            
             BigDecimal sellPrice = coinApiService.getCryptocurrencyPrice(request.baseAsset(), request.quoteAsset());
-            isSuccessful = true;
-            return new CryptoResponse(request, sellPrice, isSuccessful);
+            return new CryptoUserResponse(request, sellPrice, true);
+        } catch (Exception ex){
+            return new CryptoUserResponse(request, sellPrice, false);
         }
-        return new CryptoResponse(request, new BigDecimal(changeBalanceResult), isSuccessful);
     }
 }

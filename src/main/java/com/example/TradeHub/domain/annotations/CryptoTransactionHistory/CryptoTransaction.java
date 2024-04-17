@@ -1,6 +1,6 @@
 package com.example.TradeHub.domain.annotations.CryptoTransactionHistory;
 
-import org.jetbrains.annotations.Contract;
+import com.example.TradeHub.web.dtos.CryptoUserResponse;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  * The methods marked with this annotation will be defined as a cryptocurrency transaction,
  * which must be saved in the transaction history after execution.
  
- * @see com.example.TradeHub.web.dtos.CryptoResponse
+ * @see CryptoUserResponse
  * To use this annotation, the method must return a CryptoResponse object
  */
 @Retention(RetentionPolicy.RUNTIME)

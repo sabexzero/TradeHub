@@ -21,7 +21,7 @@ import java.math.BigDecimal;
  */
 
 @Schema(description = "The essence of the request")
-public record CryptoRequest(
+public record CryptoUserRequest(
     Long userId,
     
     @Schema(description = "Contains the code that will be needed to get information using NinjasApi, " +

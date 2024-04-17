@@ -27,7 +27,8 @@ public class CryptoWallet {
     
     private BigDecimal balance;
     
-    private String base_asset;
+    @Column("base_asset")
+    private String baseAsset;
     
     public void IncreaseBalance(BigDecimal value){
         balance = balance.add(value);
