@@ -10,7 +10,7 @@ COPY gradle/ ./gradle/
 
 COPY src/ ./src/
 
-RUN chmod +x gradlew && \
+RUN sudo chmod +x gradlew && \
     ./gradlew build --no-daemon
 
 # Use a lighter base image for the runtime
