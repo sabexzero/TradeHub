@@ -10,8 +10,9 @@ COPY gradle/ ./gradle/
 
 COPY src/ ./src/
 
-RUN sudo chmod +x gradlew && \
-    ./gradlew build --no-daemon
+RUN sudo dos2unix gradlew
+RUN sudo chmod +x gradlew
+RUN sudo ./gradlew lib:build
 
 # Use a lighter base image for the runtime
 FROM openjdk:latest
