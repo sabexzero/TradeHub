@@ -1,20 +1,17 @@
 # Use a base image with JDK and Gradle installed
 FROM gradle:latest AS build
 
-# Set the working directory in the container
 WORKDIR /app
 
-# Copy the Gradle build files
 COPY build.gradle .
 COPY settings.gradle .
 COPY gradlew .
 COPY gradle/ ./gradle/
 
-# Copy the application source code
 COPY src/ ./src/
 
-# Build the application
-RUN ./gradlew build --no-daemon
+RUN chmod +x gradlew && \
+    ./gradlew build --no-daemon
 
 # Use a lighter base image for the runtime
 FROM openjdk:latest
