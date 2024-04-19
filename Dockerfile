@@ -10,6 +10,10 @@ COPY gradle/ ./gradle/
 
 COPY src/ ./src/
 
+RUN apt-get update && \
+    apt-get install dos2unix && \
+    apt-get clean \
+
 RUN sudo dos2unix gradlew
 RUN sudo chmod +x gradlew
 RUN sudo ./gradlew lib:build
