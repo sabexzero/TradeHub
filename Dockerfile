@@ -8,12 +8,7 @@ COPY gradle ./gradle/
 
 COPY src ./src/
 
-RUN apt-get update && \
-    apt-get install dos2unix && \
-    apt-get clean \
-
 RUN gradle wrapper
-RUN dos2unix gradlew
 RUN chmod +x gradlew
 RUN ./gradlew lib:build
 
