@@ -13,9 +13,9 @@ RUN apt-get update && \
     apt-get install dos2unix && \
     apt-get clean \
 
-RUN sudo dos2unix gradlew
-RUN sudo chmod 777 gradlew
-RUN sudo ./gradlew lib:build
+RUN dos2unix gradlew
+RUN chmod 777 gradlew
+RUN ./gradlew lib:build
 
 FROM openjdk:latest
 
