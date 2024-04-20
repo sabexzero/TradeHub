@@ -2,10 +2,11 @@ FROM gradle:latest AS build
 
 WORKDIR /app
 
-COPY lib/build.gradle /app/
-COPY lib/settings.gradle /app/
-COPY lib/gradle /app/gradle/
-COPY lib/src /app/src/
+COPY build.gradle .
+COPY settings.gradle .
+COPY gradle ./gradle/
+
+COPY src ./src/
 
 RUN gradle wrapper
 RUN chmod +x gradlew
@@ -15,7 +16,7 @@ FROM openjdk:latest
 
 WORKDIR /app
 
-COPY --from=build /app/lib/build/libs/*.jar app.jar
+COPY --from=build /app/build/libs/*.jar app.jar
 
 EXPOSE 8080
 
