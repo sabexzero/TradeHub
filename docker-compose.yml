@@ -1,6 +1,7 @@
 services:
   tradehub:
-    build: ../sweet
+    build:
+      dockerfile: Dockerfile
     restart: always
     ports:
       - 8080:8080
