@@ -1,20 +1,21 @@
-# Use a base image with JDK and Gradle installed
 FROM gradle:latest AS build
 
-# Set the working directory in the container
 WORKDIR /app
 
-# Copy the Gradle build files
 COPY build.gradle .
 COPY settings.gradle .
 COPY gradlew .
-COPY gradle/ ./gradle/
+COPY gradle ./gradle/
 
-# Copy the application source code
-COPY src/ ./src/
+COPY src ./src/
 
-# Build the application
-RUN ./gradlew clean build --no-daemon
+RUN apt-get update && \
+    apt-get install dos2unix && \
+    apt-get clean \
+
+RUN sudo dos2unix gradlew
+RUN sudo chmod +x gradlew
+RUN sudo ./gradlew lib:build
 
 # Use a lighter base image for the runtime
 FROM openjdk:latest
