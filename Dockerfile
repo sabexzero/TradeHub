@@ -4,7 +4,6 @@ WORKDIR /app
 
 COPY build.gradle .
 COPY settings.gradle .
-COPY gradlew .sss
 COPY gradle ./gradle/
 
 COPY src ./src/
@@ -13,8 +12,9 @@ RUN apt-get update && \
     apt-get install dos2unix && \
     apt-get clean \
 
+RUN gradle wrapper
 RUN dos2unix gradlew
-RUN chmod 777 gradlew
+RUN chmod +x gradlew
 RUN ./gradlew lib:build
 
 FROM openjdk:latest
