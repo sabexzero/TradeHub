@@ -8,6 +8,7 @@ COPY gradle ./gradle/
 
 COPY src ./src/
 
+
 RUN gradle wrapper
 RUN chmod +x gradlew
 RUN ./gradlew build
