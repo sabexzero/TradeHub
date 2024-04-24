@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Optional;
 
@@ -24,7 +25,7 @@ public class ConvertCryptoService {
     @CryptoTransaction
     public CryptoUserResponse handleConvertRequest(
             CryptoUserRequest request
-    ){
+    ) throws IOException {
         //We receive a wallet from which the cryptocurrency will be debited
         CryptoWallet walletToGive = cryptoWalletRepository.findByUserAndCryptocurrency(
                 request.userId(),

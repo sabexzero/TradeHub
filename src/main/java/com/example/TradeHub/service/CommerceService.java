@@ -11,7 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.Random;
 
@@ -35,7 +37,7 @@ public class CommerceService {
      */
     public CompletedCryptoBuyRequest handleCryptoBuyRequest(
             CryptoUserRequest request
-    ){
+    ) throws IOException {
         BigDecimal buyPrice = coinApiService.getCryptocurrencyPrice(request.baseAsset(), request.quoteAsset());
         
         return buyCryptoRequestRepository.save(
@@ -52,12 +54,11 @@ public class CommerceService {
     @CryptoTransaction
     public CryptoUserResponse confirmCryptoBuyRequest(
             Long requestId
-    ) {
-        
+    ) throws NoSuchElementException {
         //Allegedly received money from the user
         boolean userHaveMoney = new Random().nextBoolean();
         CompletedCryptoBuyRequest request = buyCryptoRequestRepository.findById(requestId)
-                .orElseThrow(() -> new RuntimeException("Request not found"));
+                .orElseThrow(() -> new NoSuchElementException("Request not found"));
         
         if(userHaveMoney){
             try{
@@ -74,7 +75,7 @@ public class CommerceService {
     @CryptoTransaction
     public CryptoUserResponse handleCryptoSellRequest(
             CryptoUserRequest request
-    ) {
+    ) throws NoSuchElementException {
 
         try {
             walletsService.decreaseUserBalance(request.userId(), request.baseAsset(), request.amount());

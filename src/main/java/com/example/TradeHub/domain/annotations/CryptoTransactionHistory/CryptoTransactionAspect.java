@@ -39,8 +39,6 @@ public class CryptoTransactionAspect {
             return;
         }
         
-        
-        
         //Determine transaction type
         for(TransactionType transactionType : TransactionType.values()){
             if(methodName.toUpperCase().contains(transactionType.name())){

@@ -19,7 +19,6 @@ public class TransferCryptoService {
     ){
         try{
             walletsService.decreaseUserBalance(request.senderId(),request.sentAsset(),request.sentAmount());
-            
             walletsService.increaseUserBalance(request.recipientId(),request.sentAsset(),request.sentAmount());
             
             return new CryptoTransferResponse(request, true);

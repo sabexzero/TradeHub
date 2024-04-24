@@ -11,8 +11,6 @@ public class TradeHubApplication {
 	
 	//TODO: Implement logging
 	
-	//TODO: Create constant error messages
-	
 	//TODO: Security Design
 	
 	//TODO: Fix errors in service with incorrect cryptocurrencies values

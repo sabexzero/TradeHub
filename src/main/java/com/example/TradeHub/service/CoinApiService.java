@@ -11,9 +11,11 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.web.firewall.RequestRejectedException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.URI;
 import java.time.LocalDateTime;
@@ -76,7 +78,7 @@ public class CoinApiService {
     public BigDecimal getCryptocurrencyPrice(
             String baseAsset,
             String quoteAsset
-    ) throws RuntimeException {
+    ) throws IOException {
         BigDecimal result = null;
         
         ResponseEntity<String> response = restTemplate.exchange(
@@ -93,7 +95,7 @@ public class CoinApiService {
             
             result = exchange.rate();
         } catch (Exception e) {
-            throw new RuntimeException("Failed to get the price of the cryptocurrency");
+            throw new IOException("Failed to get the price of the cryptocurrency");
         }
         return result;
     }
